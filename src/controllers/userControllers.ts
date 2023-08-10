@@ -23,11 +23,15 @@ const add: RequestHandler = async (req, res) => {
 };
 
 const login: RequestHandler = async (req, res) => {
-  const { id } = req.params;
+  const { loginform } = req.params;
   try {
+    if (!loginform) {
+      return res.status(400).json({ error: "Login not provided" });
+    }
+
     const result = await prisma.user.findUnique({
       where: {
-        id: Number(id),
+        login: loginform,
       },
     });
 
