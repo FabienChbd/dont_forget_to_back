@@ -1,5 +1,5 @@
 import express from "express";
-const cors = require("cors");
+import cors from "cors";
 const app = express();
 import * as userControllers from "./controllers/userControllers";
 import * as postItControllers from "./controllers/postItControllers";

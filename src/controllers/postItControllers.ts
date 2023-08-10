@@ -3,14 +3,14 @@ import { RequestHandler } from "express";
 const prisma = new PrismaClient();
 
 const add: RequestHandler = async (req, res) => {
-  const { createdAt, content, authorId, destId } = req.body;
+  const { content, authorId, destId } = req.body;
 
   try {
     const result = await prisma.postIt.create({
       data: {
-        content,
-        authorId,
-        destId,
+        content: content,
+        author: { connect: { id: authorId } },
+        dest: { connect: { id: destId } },
       },
     });
     res.json(result);
