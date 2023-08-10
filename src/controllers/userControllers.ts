@@ -48,4 +48,9 @@ const login: RequestHandler = async (req, res) => {
   }
 };
 
-export { add, login };
+const all: RequestHandler = async (req, res) => {
+  const users = await prisma.user.findMany();
+  res.json(users);
+};
+
+export { add, login, all };

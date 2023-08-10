@@ -8,14 +8,14 @@ const router = express.Router();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    optionsSuccessStatus: 204,
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
 
 router.post(`/newUser`, userControllers.add);
-router.get(`/user`, userControllers.login);
+router.get(`/user/:id`, userControllers.login);
+router.get(`/allUsers`, userControllers.all);
 
 router.post(`/newPostIt`, postItControllers.add);
 router.delete(`/deletePostIt/:id`, postItControllers.trash);
