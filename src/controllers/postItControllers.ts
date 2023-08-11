@@ -41,14 +41,18 @@ const trash: RequestHandler = async (req, res) => {
 };
 
 const view: RequestHandler = async (req, res) => {
-  const { id } = req.params;
-
+  const { userId } = req.params;
   try {
     const result = await prisma.postIt.findMany({
       where: {
-        destId: Number(id),
+        destId: parseInt(userId),
       },
-      orderBy: { createdAt: "desc" },
+      include: {
+        author: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
     res.json(result);
   } catch (error) {

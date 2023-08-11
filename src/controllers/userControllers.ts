@@ -23,28 +23,34 @@ const add: RequestHandler = async (req, res) => {
 };
 
 const login: RequestHandler = async (req, res) => {
-  const { loginform } = req.params;
+  const { login } = req.params;
+
   try {
-    if (!loginform) {
-      return res.status(400).json({ error: "Login not provided" });
-    }
+    if (typeof login === "string") {
+      const user = await prisma.user.findUnique({
+        where: {
+          login: login,
+        },
+      });
 
-    const result = await prisma.user.findUnique({
-      where: {
-        login: loginform,
-      },
-    });
-
-    if (result) {
-      res.json(result);
+      if (user) {
+        res.json({
+          exists: true,
+          userId: user.id,
+        });
+      } else {
+        res.json({
+          exists: false,
+        });
+      }
     } else {
-      res.status(404).json({ message: "User unknown" });
+      res.json({
+        exists: false,
+      });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({
-      error: "An error occurred while searching the user.",
-    });
+    res.status(500).json({ message: "Une erreur est survenue" });
   }
 };
 
@@ -53,4 +59,14 @@ const all: RequestHandler = async (req, res) => {
   res.json(users);
 };
 
-export { add, login, all };
+const one: RequestHandler = async (req, res) => {
+  const { userId } = req.params;
+  console.log(req);
+
+  const user = await prisma.user.findUnique({
+    where: { id: parseInt(userId) },
+  });
+  res.json(user);
+};
+
+export { add, login, all, one };
