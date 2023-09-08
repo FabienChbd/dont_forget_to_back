@@ -61,11 +61,11 @@ const all: RequestHandler = async (req, res) => {
 
 const one: RequestHandler = async (req, res) => {
   const { userId } = req.params;
-  console.log(req);
 
   const user = await prisma.user.findUnique({
     where: { id: parseInt(userId) },
   });
+  console.log("RES:", user);
   res.json(user);
 };
 
